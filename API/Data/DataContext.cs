@@ -11,5 +11,6 @@ namespace API.Data
 
         public DbSet<Game> Games { get; set; }
         public DbSet<Goal> Goals {get;set;}
+        public DbSet<GoalsInStadium> GoalsInStadia {get;set;}
     }
 }

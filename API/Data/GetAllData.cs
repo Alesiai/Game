@@ -14,6 +14,9 @@ namespace API.Data
            var games = context.Games.ToList();
            var goals = context.Goals.ToList();
 
+            var to_del = context.GoalsInStadia.Where(x => x.Id != null);
+            context.GoalsInStadia.RemoveRange(to_del);
+
             var listOfStadiums = games.GroupBy(game => game.stadium);
             var goalsInStadium = new List<GoalsInStadium>();
 
@@ -31,6 +34,13 @@ namespace API.Data
                     }
                 }
             }
+
+            foreach (var member in goalsInStadium)
+            {
+                context.GoalsInStadia.Add(member);
+            }
+
+            context.SaveChangesAsync();
 
             return(goalsInStadium);
         }
