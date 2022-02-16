@@ -5,44 +5,43 @@ using System.Data.SqlClient;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using API.Entities;
+using System.Collections.Generic;
 
 namespace API.Data
 {
     public class GetAllData
     {
         public static List<GoalsInStadium> GetData(DataContext context){
-           var games = context.Games.ToList();
-           var goals = context.Goals.ToList();
+        var to_del = context.GoalsInStadia.Where(x => x.Id != null);
+        context.GoalsInStadia.RemoveRange(to_del);
 
-            var to_del = context.GoalsInStadia.Where(x => x.Id != null);
-            context.GoalsInStadia.RemoveRange(to_del);
-
-            var listOfStadiums = games.GroupBy(game => game.stadium);
-            var goalsInStadium = new List<GoalsInStadium>();
-
-            foreach(var item in listOfStadiums){
-                var memberGoalsInStadium = new GoalsInStadium();
-                memberGoalsInStadium.stadium = item.Key;
-                goalsInStadium.Add(memberGoalsInStadium);
-            }
-
-            foreach(var member in goalsInStadium){
-                foreach(var game in games){
-                    if(member.stadium == game.stadium){
-                        var searchCount = goals.Where(x => x.matchid == game.Id).Count();
-                        member.Count += searchCount;
-                    }
-                }
-            }
-
-            foreach (var member in goalsInStadium)
+        var goalsInStadium = new List<GoalsInStadium>();
+        
+        var list = context.Games.Join(context.Goals,
+            p=>p.Id,
+            n=>n.matchid,
+            (p,n)=>new
             {
-                context.GoalsInStadia.Add(member);
+                Stadium = p.stadium,
+                Id = n.Id
             }
+        ).GroupBy(info => info.Stadium)
+                        .Select(group => new { 
+                             Stadium = group.Key, 
+                             Count = group.Count() 
+                        });
 
-            context.SaveChangesAsync();
+        foreach (var item in list)
+        {
+            GoalsInStadium goal = new GoalsInStadium();
+            goal.stadium = item.Stadium;
+            goal.Count = item.Count;
+            context.GoalsInStadia.Add(goal);
+        }
+        
+        context.SaveChangesAsync();
 
-            return(goalsInStadium);
+        return(context.GoalsInStadia.ToList());
         }
     }
 }

@@ -10,11 +10,14 @@
         "projectUniqueName": "D:\\Game\\API\\API.csproj",
         "projectName": "API",
         "projectPath": "D:\\Game\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\alesy\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Alesia.Ivanova\\.nuget\\packages\\",
         "outputPath": "D:\\Game\\API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\alesy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Alesia.Ivanova\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
