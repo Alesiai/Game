@@ -21,14 +21,13 @@ namespace API.Controllers
         [HttpGet]
         public IEnumerable<GoalsInStadium> GetUsers()
         {
-            return GetAllData.GetData(_context);
+            return _context.GoalsInStadia.ToList();
         }
 
         [HttpPut("goals")]
         public IEnumerable<GoalsInStadium> AddGoals(Goal goal)
         {
             _context.Goals.Add(goal);
-
             _context.SaveChangesAsync();
 
             return GetAllData.GetData(_context);
